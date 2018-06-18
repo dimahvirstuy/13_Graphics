@@ -249,6 +249,7 @@ def p_command_cylinder(p):
     if len(p) == 9 and isinstance(p[8], str):
           cmd['cs'] = p[8]
     cmd['args'] = p[arg_start:arg_start+5]
+    commands.append(cmd)
 
 def p_command_line(p):
     """command : LINE NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER
