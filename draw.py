@@ -261,7 +261,7 @@ def add_cone (edges, cx, cy, cz, h, r, step):
                     points[i+1][0],
                     points[i+1][1],
                     points[i+1][2])
-        i++
+        i+1
     add_polygon(edges,
                 points[0][0],
                 points[0][1],
@@ -294,7 +294,53 @@ def generate_cone (cx, cy, cz, r, step):
         y = cy + r *math.sin(2*math.pi * t)
         points.append([x, y, cz])
     return points
-    
+
+def add_cylinder (edges, cx, cy, cz, r, h, step):
+    points= generate_cone(cx, cy, cz, r, step)
+    while i < step:
+        #bottom circle
+        add_polygon(edges,
+                    points[i][0],
+                    points[i][1],
+                    points[i][2],
+                    cx,
+                    cy,
+                    cz,
+                    points[i+1][0],
+                    points[i+1][1],
+                    points[i+1][2])
+        #top circle
+        add_polygon(edges,
+                    points[i][0],
+                    points[i][1]+h,
+                    points[i][2],
+                    cx,
+                    cy+h,
+                    cz,
+                    points[i+1][0],
+                    points[i+1][1]+h,
+                    points[i+1][2])
+        #side
+        add_polygon(edges,
+                    points[i][0],
+                    points[i][1],
+                    points[i][2],
+                    points[i][0],
+                    points[i][1]+h,
+                    points[i][2],
+                    points[i+1][0],
+                    points[i+1][1],
+                    points[i+1][2])
+        add_polygon(edges,
+                    points[i+1][0],
+                    points[i+1][1],
+                    points[i+1][2],
+                    points[i+1][0],
+                    points[i+1][1]+h,
+                    points[i+1][2],
+                    points[i][0],
+                    points[i][1]+h,
+                    points[i][2])
 def add_circle( points, cx, cy, cz, r, step ):
     x0 = r + cx
     y0 = cy
