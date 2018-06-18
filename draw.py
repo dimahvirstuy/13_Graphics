@@ -237,6 +237,64 @@ def generate_torus( cx, cy, cz, r0, r1, step ):
             points.append([x, y, z])
     return points
 
+def add_cone (edges, cx, cy, cz, h, r, step):
+    points = generate_cone(cx, cy, cz, r, step)
+    i = 0
+    while i < step:
+        add_polygon(edges,
+                    points[i][0],
+                    points[i][1],
+                    points[i][2],
+                    cx,
+                    cy,
+                    cz,
+                    points[i+1][0],
+                    points[i+1][1],
+                    points[i+1][2])
+        add_polygon(edges,
+                    points[i][0],
+                    points[i][1],
+                    points[i][2],
+                    cx,
+                    cy+h,
+                    cz,
+                    points[i+1][0],
+                    points[i+1][1],
+                    points[i+1][2])
+        i++
+    add_polygon(edges,
+                points[0][0],
+                points[0][1],
+                points[0][2],
+                cx,
+                cy,
+                cz,
+                points[len(points)][0],
+                points[len(points)][1],
+                points[len(points)][2])
+    add_polygon(edges,
+                points[0][0],
+                points[0][1],
+                points[0][2],
+                cx,
+                cy+h,
+                cz,
+                points[len(points)-1][0],
+                points[len(points)-1][1],
+                points[len(points)-1][2])
+
+                
+    
+def generate_cone (cx, cy, cz, r, step):
+    points = []
+    i = 0
+    while i <= step:
+        t = float(i)/step
+        x = cx + r *math.cos(2*math.pi * t)
+        y = cy + r *math.sin(2*math.pi * t)
+        points.append([x, y, cz])
+    return points
+    
 def add_circle( points, cx, cy, cz, r, step ):
     x0 = r + cx
     y0 = cy
