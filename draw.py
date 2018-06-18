@@ -242,43 +242,43 @@ def add_cone (edges, cx, cy, cz, h, r, step):
     i = 0
     while i < step:
         add_polygon(edges,
-                    points[i][0],
-                    points[i][1],
-                    points[i][2],
                     cx,
                     cy,
                     cz,
+                    points[i][0],
+                    points[i][1],
+                    points[i][2],
                     points[i+1][0],
                     points[i+1][1],
                     points[i+1][2])
         add_polygon(edges,
+                    cx,
+                    cy,
+                    cz+h,
                     points[i][0],
                     points[i][1],
                     points[i][2],
-                    cx,
-                    cy+h,
-                    cz,
                     points[i+1][0],
                     points[i+1][1],
                     points[i+1][2])
-        i++
+        i+=1
     add_polygon(edges,
-                points[0][0],
-                points[0][1],
-                points[0][2],
                 cx,
                 cy,
                 cz,
-                points[len(points)][0],
-                points[len(points)][1],
-                points[len(points)][2])
-    add_polygon(edges,
                 points[0][0],
                 points[0][1],
                 points[0][2],
+                points[len(points)-1][0],
+                points[len(points)-1][1],
+                points[len(points)-1][2])
+    add_polygon(edges,
                 cx,
-                cy+h,
-                cz,
+                cy,
+                cz+h,
+                points[0][0],
+                points[0][1],
+                points[0][2],
                 points[len(points)-1][0],
                 points[len(points)-1][1],
                 points[len(points)-1][2])
@@ -293,8 +293,105 @@ def generate_cone (cx, cy, cz, r, step):
         x = cx + r *math.cos(2*math.pi * t)
         y = cy + r *math.sin(2*math.pi * t)
         points.append([x, y, cz])
+        i += 1
     return points
-    
+
+#flag defines if the cylinder has a hole in it, if so, the radius of the hole is r2
+def add_cylinder (edges, cx, cy, cz, r, h, step):
+    points= generate_cone(cx, cy, cz, r, step)
+    if(0 == 0):
+        i = 0
+        while i < step:
+            #bottom circle
+            add_polygon(edges,
+                        cx,
+                        cy,
+                        cz,
+                        points[i][0],
+                        points[i][1],
+                        points[i][2],
+                        points[i+1][0],
+                        points[i+1][1],
+                        points[i+1][2])
+            #top circle
+            add_polygon(edges,
+                        cx,
+                        cy,
+                        cz+h,
+                        points[i][0],
+                        points[i][1],
+                        points[i][2]+h,
+                        points[i+1][0],
+                        points[i+1][1],
+                        points[i+1][2]+h)
+            #side
+            add_polygon(edges,
+                        points[i][0],
+                        points[i][1],
+                        points[i][2]+h,
+                        points[i][0],
+                        points[i][1],
+                        points[i][2],
+                        points[i+1][0],
+                        points[i+1][1],
+                        points[i+1][2])
+            add_polygon(edges,
+                        points[i+1][0],
+                        points[i+1][1],
+                        points[i+1][2],
+                        points[i+1][0],
+                        points[i+1][1],
+                        points[i+1][2]+h,
+                        points[i][0],
+                        points[i][1],
+                        points[i][2]+h)
+            i += 1
+    else:
+        points_2 = generate_cone(cx, cy, cz, r2, step)
+        while i < step:
+            add_polygon(edges,
+                        points[i][0],
+                        points[i][1],
+                        points[i][2],
+                        cx,
+                        cy,
+                        cz,
+                        points[i+1][0],
+                        points[i+1][1],
+                        points[i+1][2])
+            #top circle
+            add_polygon(edges,
+                        points[i][0],
+                        points[i][1]+h,
+                        points[i][2],
+                        cx,
+                        cy+h,
+                        cz,
+                        points[i+1][0],
+                        points[i+1][1]+h,
+                        points[i+1][2])
+            #side
+            add_polygon(edges,
+                        points[i][0],
+                        points[i][1],
+                        points[i][2],
+                        points[i][0],
+                        points[i][1]+h,
+                        points[i][2],
+                        points[i+1][0],
+                        points[i+1][1],
+                        points[i+1][2])
+            add_polygon(edges,
+                        points[i+1][0],
+                        points[i+1][1],
+                        points[i+1][2],
+                        points[i+1][0],
+                        points[i+1][1]+h,
+                        points[i+1][2],
+                        points[i][0],
+                        points[i][1]+h,
+                        points[i][2])
+        
 def add_circle( points, cx, cy, cz, r, step ):
     x0 = r + cx
     y0 = cy
