@@ -57,7 +57,10 @@ reserved = {
     "sphere" : "SPHERE",
     "box" : "BOX",
     "cone" : "CONE",
+<<<<<<< HEAD
     "cylinder" : "CYLINDER",
+=======
+>>>>>>> a8e3c053b89d26237d1dc7f7600e7bf43f9b5967
     "line" : "LINE",
     "mesh" : "MESH",
     "texture" : "TEXTURE",
@@ -218,6 +221,7 @@ def p_command_box(p):
     commands.append(cmd)
 
 def p_command_cone(p):
+<<<<<<< HEAD
     """command : CONE NUMBER NUMBER NUMBER NUMBER NUMBER
                | CONE NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL
                | CONE SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER
@@ -250,6 +254,21 @@ def p_command_cylinder(p):
           cmd['cs'] = p[8]
     cmd['args'] = p[arg_start:arg_start+5]
     commands.append(cmd)
+=======
+    cmd = {'op' : p[1], 'constants' : None, 'cs' : None, 'args':[]}
+    arg_start = 2
+    if isintance(p[2], str):
+        cmd['constants'] = p[2]
+        arg_start = 3
+    if len(p) == 9 and isinstance(p[8], str):
+        cmd['cs'] = p[8]
+    if len(p) == 10 and isinstance(p[9], str):
+        cmd['cs'] = p[9]
+    cmd['args'] = p[arg_start:arg_start+6]
+    commands.append(cmd)
+    
+
+>>>>>>> a8e3c053b89d26237d1dc7f7600e7bf43f9b5967
 
 def p_command_line(p):
     """command : LINE NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER
